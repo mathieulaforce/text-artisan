@@ -18,7 +18,7 @@ const OutputSection: Component = () => {
   return (
     <div class="grid grid-rows-[auto_1fr] gap-2">
       <div class="flex justify-between gap-2">
-        <span class="flex-1 text-right">Output</span>
+        <span>Output</span>
         <CopyButton onclick={onCopyClicked} />
       </div>
       <TextArea ref={textAreaRef} value={output()} />

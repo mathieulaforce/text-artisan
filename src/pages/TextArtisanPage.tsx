@@ -5,6 +5,7 @@ import RowsTemplate from '../layout/templates/rowsTemplate';
 import ResultBottomTemplate from '../layout/templates/resultBottom';
 import ResultRightTemplate from '../layout/templates/resultRight';
 import ResultLeftTemplate from '../layout/templates/resultLeft';
+import Footer from '../layout/footer';
 
 const TextArtisanPage: Component = () => {
   const [layout] = useLayout();
@@ -24,6 +25,7 @@ const TextArtisanPage: Component = () => {
           </Match>
         </Switch>
       </div>
+      <Footer />
     </div>
   );
 };
