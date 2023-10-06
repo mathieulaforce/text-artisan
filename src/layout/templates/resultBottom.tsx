@@ -10,7 +10,7 @@ const ResultBottomTemplate: ParentComponent = () => {
         <DataSection />
         <PatternSection />
       </div>
-      <div class="grid bg-base-200 p-4">
+      <div class="grid p-4">
         <OutputSection />
       </div>
     </div>

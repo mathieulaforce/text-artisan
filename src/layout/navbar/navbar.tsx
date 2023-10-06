@@ -5,7 +5,7 @@ const Navbar: Component = () => {
   return (
     <div class="flex bg-neutral text-neutral-content py-2 px-4">
       <div class="flex-1">
-        <span class="text-sm">Text Artisan</span>
+        <a class="btn btn-ghost normal-case btn-sm text-sm">Text Artisan</a>
       </div>
       <div class="flex gap-2">
         <DesignButton />
