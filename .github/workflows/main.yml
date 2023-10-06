@@ -1,11 +1,11 @@
 name: Build and Test Application
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   push:
-    branches: [ "trunk" ]
+    branches: ['trunk']
   pull_request:
-    branches: [ "trunk" ]
+    branches: ['trunk']
 
 jobs:
   build_test:
@@ -18,15 +18,41 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: build and test
+          node-version: 16
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
         run: |
-          pnpm build
-          pnpm prettier:check
-          pnpm test      
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: build
+        run: pnpm build
+
+      - name: run tests
+        run: pnpm test
+
+      - name: check prettier
+        run: pnpm prettier:check
