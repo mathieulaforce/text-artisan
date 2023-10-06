@@ -14,15 +14,8 @@ const ThemeSettings: Component = () => {
       <div class="grid grid-cols-2">
         <For each={themes.sort()}>
           {(theme) => (
-            <div
-              data-theme={theme}
-              class="bg-base-100 flex-1 text-base-content w-44 cursor-pointer"
-            >
-              <ThemeItem
-                theme={theme}
-                isSelected={theme === currentTheme()}
-                onThemeSelected={setCurrentTheme}
-              />
+            <div data-theme={theme} class="bg-base-100 flex-1 text-base-content w-44 cursor-pointer">
+              <ThemeItem theme={theme} isSelected={theme === currentTheme()} onThemeSelected={setCurrentTheme} />
             </div>
           )}
         </For>
