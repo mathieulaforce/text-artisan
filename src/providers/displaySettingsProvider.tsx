@@ -1,9 +1,4 @@
-import {
-  ParentComponent,
-  createContext,
-  createEffect,
-  createRenderEffect,
-} from 'solid-js';
+import { ParentComponent, createContext, createEffect, createRenderEffect } from 'solid-js';
 import { SetStoreFunction, createStore, produce } from 'solid-js/store';
 import theme from '../assets/themes.json';
 import { localStorageItemAccessor } from '../utils/localStorageAccessor';
@@ -17,17 +12,11 @@ const initialDisplaySettings = {
 
 type DisplaySettingsType = typeof initialDisplaySettings;
 
-const DisplaySettingsContext =
-  createContext<[DisplaySettingsType, SetStoreFunction<DisplaySettingsType>]>();
+const DisplaySettingsContext = createContext<[DisplaySettingsType, SetStoreFunction<DisplaySettingsType>]>();
 
 const DisplaySettingsProvider: ParentComponent = (props) => {
-  const displaySettingStorage = localStorageItemAccessor<DisplaySettingsType>(
-    'display-settings',
-    initialDisplaySettings,
-  );
-  const [displaySetting, setDisplaySettings] = createStore<DisplaySettingsType>(
-    displaySettingStorage.getItem(),
-  );
+  const displaySettingStorage = localStorageItemAccessor<DisplaySettingsType>('display-settings', initialDisplaySettings);
+  const [displaySetting, setDisplaySettings] = createStore<DisplaySettingsType>(displaySettingStorage.getItem());
 
   createRenderEffect(() => {
     const html = document.querySelector('html');
@@ -38,36 +27,17 @@ const DisplaySettingsProvider: ParentComponent = (props) => {
     displaySettingStorage.saveItem(displaySetting);
   });
 
-  return (
-    <DisplaySettingsContext.Provider
-      value={[displaySetting, setDisplaySettings]}
-    >
-      {props.children}
-    </DisplaySettingsContext.Provider>
-  );
+  return <DisplaySettingsContext.Provider value={[displaySetting, setDisplaySettings]}>{props.children}</DisplaySettingsContext.Provider>;
 };
 
-export const useLayout = (): [
-  () => LayoutType,
-  (value: LayoutType) => void,
-] => {
-  const [displaySetting, setDisplaySettings] = useContextOrThrow(
-    DisplaySettingsContext,
-  );
-  return [
-    () => displaySetting.layout,
-    (layout) => setDisplaySettings(produce((state) => (state.layout = layout))),
-  ];
+export const useLayout = (): [() => LayoutType, (value: LayoutType) => void] => {
+  const [displaySetting, setDisplaySettings] = useContextOrThrow(DisplaySettingsContext);
+  return [() => displaySetting.layout, (layout) => setDisplaySettings(produce((state) => (state.layout = layout)))];
 };
 
 export const useTheme = (): [() => string, (value: string) => void] => {
-  const [displaySetting, setDisplaySettings] = useContextOrThrow(
-    DisplaySettingsContext,
-  );
-  return [
-    () => displaySetting.theme,
-    (theme) => setDisplaySettings(produce((state) => (state.theme = theme))),
-  ];
+  const [displaySetting, setDisplaySettings] = useContextOrThrow(DisplaySettingsContext);
+  return [() => displaySetting.theme, (theme) => setDisplaySettings(produce((state) => (state.theme = theme)))];
 };
 
 export default DisplaySettingsProvider;

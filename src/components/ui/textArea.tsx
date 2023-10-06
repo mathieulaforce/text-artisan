@@ -11,12 +11,7 @@ interface TextAreaProps {
 }
 
 const TextArea: Component<TextAreaProps> = (props) => {
-  const [inputProps, eventHanlers] = splitProps(props, [
-    'label',
-    'value',
-    'placeholder',
-    'rows',
-  ]);
+  const [inputProps, eventHanlers] = splitProps(props, ['label', 'value', 'placeholder', 'rows']);
   return (
     <div class="form-control grow resize-y">
       {inputProps.label && (
