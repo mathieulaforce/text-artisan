@@ -1,6 +1,6 @@
 **status**: ![github build and test badge](https://github.com/mathieulaforce/text-artisan/actions/workflows/main.yml/badge.svg)
 
-**url**: https://text-artisan.vercel.com.
+**url**: https://text-artisan.vercel.app.
 
 # Documentation
 
