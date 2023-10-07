@@ -46,8 +46,56 @@ export class PatternMatcher {
     return !!this.matchArray;
   }
 
-  replacePlaceholder(currentValue: string, placeHolder: string, valueToReplace: string) {
+  replacePlaceholder(currentValue: string, placeHolder: string, valueToReplace: string, func?: (v: string) => string) {
+    if (func) {
+      valueToReplace = func(valueToReplace);
+    }
     return this.replaceValue(currentValue, placeHolder, valueToReplace);
+  }
+
+  isFunction(placeholderName: string) {
+    return placeholderName.startsWith('<') && placeholderName.endsWith('>');
+  }
+
+  replaceAndHandleFunction(functions: string) {}
+
+  isKeyword(keyword: string) {
+    if (['rowNumber', 'rowIndex'].includes(keyword)) {
+      return true;
+    }
+
+    return keyword.match(/^h.*\d$/g) !== null;
+  }
+
+  replaceKeywords(output: string, name: string, rowIndex: number, dataEntry: CsvDataTable, func?: (v: string) => string) {
+    if (name === `rowNumber`) {
+      return this.replaceValue(output, `rowNumber`, (rowIndex + 1).toString());
+    }
+    if (name === `rowIndex`) {
+      return this.replaceValue(output, `rowIndex`, rowIndex.toString());
+    }
+
+    if (!!name.match(/^h.*\d$/g) !== null) {
+      let headerName = dataEntry.getHeadernameByIndex(+name.substring(1));
+      if (func) {
+        headerName = func(headerName ?? '');
+      }
+      return this.replaceValue(output, name, headerName ?? '');
+    }
+    return output;
+  }
+
+  replaceFunctions(output: string, name: string, dataEntry: CsvDataTable) {
+    const nameAndFunctions = name.split('.');
+    const nameWithoutFunctions = nameAndFunctions.shift();
+    const functions = nameAndFunctions;
+  }
+
+  private createGeneralRegexPattern(options: PatternOptions) {
+    const escapedPrefix = this.escapeRegex(options.prefix);
+    const escapedSuffix = this.escapeRegex(options.suffix);
+
+    return new RegExp(`(${escapedPrefix}.+?${escapedSuffix})`, 'g');
   }
 
   private replaceValue(currentValue: string, placeHolderName: string | number, valueToReplace: string) {
@@ -61,36 +109,6 @@ export class PatternMatcher {
 
   private wrapPlaceHolder(placeHolderName: string) {
     return `${this.options!.prefix}${placeHolderName}${this.options!.suffix}`;
-  }
-
-  public isKeyword(keyword: string) {
-    if (['rowNumber', 'rowIndex'].includes(keyword)) {
-      return true;
-    }
-
-    return keyword.match(/^h.*\d$/g) !== null;
-  }
-
-  public replaceKeywords(output: string, name: string, rowIndex: number, dataEntry: CsvDataTable) {
-    if (name === `rowNumber`) {
-      return this.replaceValue(output, `rowNumber`, (rowIndex + 1).toString());
-    }
-    if (name === `rowIndex`) {
-      return this.replaceValue(output, `rowIndex`, rowIndex.toString());
-    }
-
-    if (!!name.match(/^h.*\d$/g) !== null) {
-      const headerName = dataEntry.getHeadernameByIndex(+name.substring(1));
-      return this.replaceValue(output, name, headerName ?? '');
-    }
-    return output;
-  }
-
-  private createGeneralRegexPattern(options: PatternOptions) {
-    const escapedPrefix = this.escapeRegex(options.prefix);
-    const escapedSuffix = this.escapeRegex(options.suffix);
-
-    return new RegExp(`(${escapedPrefix}.+?${escapedSuffix})`, 'g');
   }
 
   private escapeRegex(pattern: string): string {
