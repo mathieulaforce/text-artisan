@@ -1,4 +1,4 @@
-**status**: ![github build and test badge](https://github.com/mathieulaforce/text-artisan/actions/workflows/main.yml/badge.svg)
+![github build and test badge](https://github.com/mathieulaforce/text-artisan/actions/workflows/main.yml/badge.svg)
 
 **url**: https://text-artisan.vercel.app.
 
@@ -45,7 +45,7 @@ examples of a placeholder when prefix and suffix have the value $
 - \$firstname\$: This placeholder matches the 'firstname' data.
 - \$lastname\$: This one matches the 'lastname' data.
 
-Each field in the 'Data section' corresponds to a number, starting from 0. For instance, if you have data fields like firstname, lastname, country, they correspond to placeholders like $0$, $1$, $2$.
+Each field in the 'Data section' corresponds to a number, starting from 0. For instance, if you have data fields like firstname, lastname, country, they correspond to placeholders like \$0\$, \$1\$, \$2\$.
 
 You can also use named placeholders, but only when you have a header in the CSV format. With a header, the placeholders match the field names like $firstname$, $lastname$, and $country$.
 
