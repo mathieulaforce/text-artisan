@@ -57,8 +57,6 @@ export class PatternMatcher {
     return placeholderName.startsWith('<') && placeholderName.endsWith('>');
   }
 
-  replaceAndHandleFunction(functions: string) {}
-
   isKeyword(keyword: string) {
     if (['rowNumber', 'rowIndex'].includes(keyword)) {
       return true;
@@ -83,12 +81,6 @@ export class PatternMatcher {
       return this.replaceValue(output, name, headerName ?? '');
     }
     return output;
-  }
-
-  replaceFunctions(output: string, name: string, dataEntry: CsvDataTable) {
-    const nameAndFunctions = name.split('.');
-    const nameWithoutFunctions = nameAndFunctions.shift();
-    const functions = nameAndFunctions;
   }
 
   private createGeneralRegexPattern(options: PatternOptions) {

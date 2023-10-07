@@ -1,4 +1,4 @@
-import CsvDataTable, { DataColumn } from '../csvDataTable';
+import CsvDataTable from '../csvDataTable';
 import CsvInputReader from '../inputData/inputReader';
 import { PatternMatcher } from '../pattern/patternMatcher';
 import type { PatternOptions } from '../pattern/patternMatcher';
